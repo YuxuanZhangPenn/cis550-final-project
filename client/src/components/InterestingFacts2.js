@@ -18,10 +18,11 @@ export default class InterestingFacts2 extends React.Component {
 
 		this.handleMovieNameChange = this.handleMovieNameChange.bind(this);
 		this.handleBestPicActorActressSameYearChange = this.handleBestPicActorActressSameYearChange.bind(this);
-		
+
 		this.submitMovie = this.submitMovie.bind(this);
 		this.submitOldestWinner = this.submitOldestWinner.bind(this);
 		this.submitWinFirstNomination = this.submitWinFirstNomination.bind(this);
+		this.submitBestPicActorActressSameYearChange = this.submitBestPicActorActressSameYearChange.bind(this);
 	}
 
 	handleMovieNameChange(e) {
@@ -39,6 +40,28 @@ export default class InterestingFacts2 extends React.Component {
 	/* ---- Q2 (Recommendations) ---- */
 	submitMovie() {
 		fetch("http://localhost:8081/bestPicActorActressSameYear/" + this.state.movieName,
+		{
+			method: "GET"
+		}).then(res => {
+			return res.json();
+		}, err => {
+			console.log(err);
+		}).then(moviesList => {
+			console.log(moviesList); //displays your JSON object in the console
+			let moviesDivs = moviesList.map((movie, i) => 
+			<InterestingFacts2Row id={"movies-" + movie.title} title={movie.title} id = {movie.id} rating = {movie.rating} vote_count = {movie.vote_count}/>
+			);
+
+			//This saves our HTML representation of the data into the state, which we can call in our render function
+			this.setState({
+				recMovies: moviesDivs
+			});
+		});
+	}
+
+
+	submitBestPicActorActressSameYearChange() {
+		fetch("http://localhost:8081/bestPicActorActressSameYear/" + this.state.BestPicActorActressSameYear,
 		{
 			method: "GET"
 		}).then(res => {
@@ -115,8 +138,9 @@ export default class InterestingFacts2 extends React.Component {
 			    		<div className="h5">Interesting Facts</div>
 			    		<br></br>
 			    		<div className="input-container">
-			    			<input type='text' placeholder="Enter Year" value={this.state.BestPicActorActressSameYear} onChange={this.handleBestPicActorActressSameYearChange} id="movieName" className="movie-input"/>
-			    			<button id="submitMovieBtn" className="submit-btn" onClick={this.submitMovie}>Submit</button>
+			    			<p>Films won best picture, actor and actress at the same year (Please select which year)</p>
+			    			<input type='text' placeholder="Enter Year" value={this.state.BestPicActorActressSameYear} onChange={this.handleBestPicActorActressSameYearChange} id="BestPicActorActressSameYear" className="movie-input"/>
+			    			<button id="submitMovieBtn" className="submit-btn" onClick={this.submitBestPicActorActressSameYearChange}>Submit</button>
 			    		</div>
 			    	</div>
 			    	<div className = "jumbotron">

@@ -128,11 +128,31 @@ function getMovies(req, res) {
 
 
 function getBestPicActorActressSameYear(req, res) {
-  var inputYear = req.params.year;
+  var inputYear = req.params.BestPicActorActressSameYear;
 
-  var query =`SELECT title AS movieName, produce_year AS year, rating
-  FROM Movies m
-  WHERE m.title = '${inputYear}';`;
+  var query =`with temp as
+  ((select film_title, year_film from Oscar
+  where prize like '%BEST PICTURE%'
+  and win_flag = 'TRUE'
+  and year_film > 1944) UNION
+  (select film_title, year_film from Oscar
+  where prize like '%OUTSTANDING%' AND prize like '%PRODUCTION%'
+  and win_flag = 'TRUE'
+  and year_film <= 1941) UNION
+  (select film_title, year_film from Oscar
+  where prize like '%OUTSTANDING%' AND prize like '%PICTURE%'
+  and win_flag = 'TRUE'
+  and year_film <= 1944))
+  select * from 
+  (select film_title, year_film from Oscar
+  where prize like '%ACTOR%' and not prize like '%SUPPORTING%'
+  and win_flag = 'TRUE'
+  and (film_title, year_film) in 
+  (select film_title, year_film from Oscar
+  where prize like '%ACTRESS%' and not prize like '%SUPPORTING%'
+  and win_flag = 'TRUE')) A
+  where (film_title, year_film) in (select * from Temp) AND year_film = '${inputYear}';
+`;
   console.log(query);
 
   connection.query(query, function(err, rows, fields) {

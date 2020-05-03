@@ -36,7 +36,7 @@ app.get('/oldestWinner', routes.getOldestWinner);
 app.get('/winFirstNomination', routes.getFirstNomination);
 
 /* interesting fact 2*/
-app.get('/bestPicActorActressSameYear:year', routes.getBestPicActorActressSameYear);
+app.get('/bestPicActorActressSameYear/:BestPicActorActressSameYear', routes.getBestPicActorActressSameYear);
 
 app.listen(8081, () => {
 	console.log(`Server listening on PORT 8081`);
