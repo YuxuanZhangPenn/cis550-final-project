@@ -103,6 +103,24 @@ function getLeadingRole4times(req, res) {
 
 
 
+function getWin3awards(req, res) {
+    var year = req.params.arg;
+    var query = `
+    SELECT m.title 
+    FROM Movies m
+    WHERE m.title IN (SELECT film_title AS title FROM Oscar WHERE win_flag = 'TRUE')
+    AND m.title IN (SELECT film_title AS title FROM Golden WHERE win_flag = 'TRUE') 
+    AND m.title IN (SELECT nominee AS title FROM British WHERE win_flag = 'TRUE'); 
+  `;
+  console.log(query);
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+};
+
 
 function getFirstNomination(req, res) {
     var year = req.params.arg;
@@ -249,6 +267,7 @@ module.exports = {
   getYoungestWinner: getYoungestWinner,
   getFirstNomination: getFirstNomination,
   getLeadingRole4times: getLeadingRole4times,
+  getWin3awards: getWin3awards,
 	getYear: getYear,
   getMovies: getMovies,
   AwardPerYear: AwardPerYear,

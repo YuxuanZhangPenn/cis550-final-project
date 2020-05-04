@@ -21,7 +21,8 @@ export default class InterestingFacts2 extends React.Component {
 			oldestWinnerResults: [],
 			youngestWinnerResults: [],
 			firstNominationResults:[],
-			LeadingRole4timesResults:[]
+			LeadingRole4timesResults:[],
+			Win3awardsResults:[]
 		}
 
 		this.handleMovieNameChange = this.handleMovieNameChange.bind(this);
@@ -34,7 +35,8 @@ export default class InterestingFacts2 extends React.Component {
 		this.submitWinFirstNomination = this.submitWinFirstNomination.bind(this);
 		this.submitBestPicActorActressSameYearChange = this.submitBestPicActorActressSameYearChange.bind(this);
 		this.submitHighestRatingWinNothingYearChange = this.submitHighestRatingWinNothingYearChange.bind(this);
-		this.submitLeadingRole4timesChange = this.submitLeadingRole4timesChange.bind(this);
+		this.submitLeadingRole4times = this.submitLeadingRole4times.bind(this);
+		this.submitWin3awards = this.submitWin3awards.bind(this);
 	}
 
 	handleMovieNameChange(e) {
@@ -94,7 +96,9 @@ export default class InterestingFacts2 extends React.Component {
 
 			//This saves our HTML representation of the data into the state, which we can call in our render function
 			this.setState({
-				BestPicActorActressSameYearResult: resultsDivs
+				BestPicActorActressSameYearResult: resultsDivs,
+				HighestRatingWinNothingYearResult: [],
+
 			});
 		});
 	}
@@ -115,6 +119,7 @@ export default class InterestingFacts2 extends React.Component {
 
 			//This saves our HTML representation of the data into the state, which we can call in our render function
 			this.setState({
+				BestPicActorActressSameYearResult:[],
 				HighestRatingWinNothingYearResult: resultsDivs
 			});
 		});
@@ -194,7 +199,7 @@ export default class InterestingFacts2 extends React.Component {
 	}
 
 
-	submitLeadingRole4timesChange() {
+	submitLeadingRole4times() {
 		fetch("http://localhost:8081/leadingRole4times",
 		{
 			method: "GET"
@@ -214,6 +219,28 @@ export default class InterestingFacts2 extends React.Component {
 				youngestWinnerResults: [],
 				firstNominationResults: [],
 				LeadingRole4timesResults: resultDivs
+			});
+		});
+	}
+
+
+	submitWin3awards() {
+		fetch("http://localhost:8081/win3awards",
+		{
+			method: "GET"
+		}).then(res => {
+			return res.json();
+		}, err => {
+			console.log(err);
+		}).then(resultList => {
+			console.log(resultList); //displays your JSON object in the console
+			let resultDivs = resultList.map((result, i) => 
+			<InterestingFacts2Row id={"movies-" + result.title} win3prizeTitle={result.title} />
+			);
+
+			//This saves our HTML representation of the data into the state, which we can call in our render function
+			this.setState({
+				Win3awardsResults: resultDivs
 			});
 		});
 	}
@@ -255,14 +282,14 @@ export default class InterestingFacts2 extends React.Component {
 			    		<div className="header-container">
 			    			<div className="h4">Do you want to know something about actors?</div>
 			    			<div className="headers">
-			    				<div button className = "btn btn-info" onClick={this.submitLeadingRole4timesChange}> Actor nominated “Actor in a leading role” over 4 times but never won </div>
-			    				<div button className = "btn btn-info" onClick={this.submitYoungestWinner}> Youngest Winner </div>
-			    				<div button className = "btn btn-info" > Most nomination </div>
+			    				<div button className = "btn btn-info" onClick={this.submitLeadingRole4times}> Actor nominated “Actor in a leading role” over 4 times but never won </div> &nbsp;
+			    				<div button className = "btn btn-info" onClick={this.submitYoungestWinner}> Youngest Winner </div> &nbsp;
+			    				<div button className = "btn btn-info" > Most nomination </div> &nbsp;
 			    			</div>
 			    			<div className="headers">
-			    				<div button className = "btn btn-info" onClick={this.submitOldestWinner}> Actor won most in a certain prize </div>
-			    				<div button className = "btn btn-info"> Actor won most "Best Actor in supporting role" </div>
-			    				<div button className = "btn btn-info" onClick={this.submitWinFirstNomination}> Actors won at the first nomination </div>
+			    				<div button className = "btn btn-info" onClick={this.submitOldestWinner}> Actor won most in a certain prize </div> &nbsp;
+			    				<div button className = "btn btn-info"> Actor won most "Best Actor in supporting role" </div> &nbsp;
+			    				<div button className = "btn btn-info" onClick={this.submitWinFirstNomination}> Actors won at the first nomination </div> 
 			    			</div>
 			    		</div>
 			    		<div className="oldestWinner-results-container" id="results">
@@ -282,16 +309,17 @@ export default class InterestingFacts2 extends React.Component {
 			    		<div className="header-container">
 			    			<div className="h4">Do you want to know something about movies?</div>
 			    			<div className="headers">
-			    				<div button className = "btn btn-info"> Movies won best picture, best actor and actress at the same year </div>
+			    				<div button className = "btn btn-info"> Movies won best picture, best actor and actress at the same year </div> &nbsp;
+			    				<div button className = "btn btn-info" onClick={this.submitWin3awards}> Movies won all the three prizes </div> &nbsp;
 			    			</div>
 			    			<div className="headers">
-			    				<div button className = "btn btn-info"> Top 10 lowest rating movies which won Oscar best writing </div>
-			    				<div button className = "btn btn-info"> Won most nominees in a year </div>
-			    				<div button className = "btn btn-info"> Nominated, but won nothing </div>
+			    				<div button className = "btn btn-info"> Top 10 lowest rating movies which won Oscar best writing </div> &nbsp;
+			    				<div button className = "btn btn-info"> Won most nominees in a year </div> &nbsp;
+			    				<div button className = "btn btn-info"> Nominated, but won nothing </div> 
 			    			</div>
 			    		</div>
 			    		<div className="results-container" id="results">
-			    			{this.state.recMovies}
+			    			{this.state.Win3awardsResults}
 			    		</div>
 			    	</div>
 			    </div>
