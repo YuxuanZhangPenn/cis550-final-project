@@ -164,6 +164,35 @@ function getBestPicActorActressSameYear(req, res) {
   });
 };
 
+
+
+function getHighestRatingWinNothingYear(req, res) {
+  var inputYear = req.params.highestRatingWinNothingYear;
+
+  var query =`WITH highest_rating AS (
+  SELECT m.title FROM Movies m, (SELECT MAX(rating) AS rating FROM Movies WHERE year = '${inputYear}' ) a WHERE m.year = '${inputYear}' AND m.rating = a.rating) 
+  SELECT h.title 
+  FROM highest_rating h 
+  WHERE h.title NOT IN (
+  SELECT film_title AS title FROM Oscar o WHERE o.win_flag = 'TRUE' AND o.year_film = '${inputYear}') 
+  AND h.title NOT IN (
+  SELECT g.film_title FROM Golden g WHERE g.win_flag = 'TRUE' AND g.year_film = '${inputYear}') 
+  AND h.title NOT IN (
+  SELECT b.nominee FROM British b WHERE b.win_flag = 'TRUE' AND b.year_film = '${inputYear}');
+
+`;
+  console.log(query);
+
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      console.log(rows);
+      res.json(rows);
+    }
+  });
+};
+
+
 // The exported functions, which can be accessed in index.js.
 module.exports = {
 	getAllGenres: getAllGenres,
@@ -173,5 +202,6 @@ module.exports = {
 	getYear: getYear,
   getMovies: getMovies,
   AwardPerYear: AwardPerYear,
-  getBestPicActorActressSameYear: getBestPicActorActressSameYear
+  getBestPicActorActressSameYear: getBestPicActorActressSameYear,
+  getHighestRatingWinNothingYear: getHighestRatingWinNothingYear
 }

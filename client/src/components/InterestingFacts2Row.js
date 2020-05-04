@@ -9,13 +9,13 @@ export default class InterestingFacts2Row extends React.Component {
 	render() {
 		return (
 			<div>
-			<div className="oldestWinner-results-container">
+			<div className="BestPicActorActressSameYear-results-container">
+				<div className="title">{this.props.title}</div>
 				<div className="nominees">{this.props.nominees}</div>
 				<div className="number">{this.props.number}</div>
+				<div className="WinFirstNominationActor">{this.props.WinFirstNominationActor}</div>
 			</div>
-			<div className="winFirstNomination-results-container">
-				<div className="nominees">{this.props.nominees}</div>
-			</div>
+			
 			</div>
 		);
 	}
