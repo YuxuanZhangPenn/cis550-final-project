@@ -37,9 +37,11 @@ app.get('/youngestWinner', routes.getYoungestWinner);
 app.get('/winFirstNomination', routes.getFirstNomination);
 app.get('/leadingRole4times', routes.getLeadingRole4times);
 app.get('/win3awards', routes.getWin3awards);
+app.get('/lowestRatingBestOscarStory', routes.getLowestRatingBestOscarStory);
+app.get('/bestPicActorActressSameYear', routes.getBestPicActorActressSameYear);
 
 /* interesting fact 2*/
-app.get('/bestPicActorActressSameYear/:BestPicActorActressSameYear', routes.getBestPicActorActressSameYear);
+
 app.get('/highestRatingWinNothing/:highestRatingWinNothingYear', routes.getHighestRatingWinNothingYear);
 
 app.listen(8081, () => {

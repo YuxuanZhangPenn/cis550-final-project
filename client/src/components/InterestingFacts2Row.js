@@ -18,6 +18,8 @@ export default class InterestingFacts2Row extends React.Component {
 				<div className="leadingRole4">{this.props.leadingRole4timesActor}</div>
 				<div className="leadingRole4">{this.props.leadingRoleTimes} </div>
 				<div className="win3prize">{this.props.win3prizeTitle} </div>
+				<div className="win3prize">{this.props.LowestRatingBestOscarStoryTitle} </div>
+				<div className="win3prize">{this.props.LowestRatingBestOscarStoryRating} </div>
 				
 			</div>
 		);
