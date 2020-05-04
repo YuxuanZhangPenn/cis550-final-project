@@ -33,6 +33,7 @@ app.get('/years/:year', routes.AwardPerYear);
 
 /* interesting fact 1 */
 app.get('/oldestWinner', routes.getOldestWinner);
+app.get('/youngestWinner', routes.getYoungestWinner);
 app.get('/winFirstNomination', routes.getFirstNomination);
 
 /* interesting fact 2*/

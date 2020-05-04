@@ -57,6 +57,27 @@ function getOldestWinner(req, res) {
 };
 
 
+function getYoungestWinner(req, res) {
+    var year = req.params.arg;
+    var query = `
+    SELECT O.nominee, O.year-P.birth AS age
+    FROM Oscar O
+    JOIN People P on O.nominee = P.name
+    WHERE O.prize LIKE '%ACTOR%' AND NOT O.prize LIKE '%SUPPORTING%'
+    AND O.win_flag = 'TRUE'
+    AND O.year - P.birth <= 35
+    ORDER BY age;
+  `;
+  console.log(query);
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+};
+
+
 function getFirstNomination(req, res) {
     var year = req.params.arg;
     var query = `
@@ -67,6 +88,7 @@ function getFirstNomination(req, res) {
     and O.year_film = T1.first
     and O.win_flag = 'TRUE';
   `;
+  console.log(query);
   connection.query(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
@@ -198,6 +220,7 @@ module.exports = {
 	getAllGenres: getAllGenres,
 	getTopInGenre: getTopInGenre,
 	getOldestWinner: getOldestWinner,
+  getYoungestWinner: getYoungestWinner,
   getFirstNomination: getFirstNomination,
 	getYear: getYear,
   getMovies: getMovies,

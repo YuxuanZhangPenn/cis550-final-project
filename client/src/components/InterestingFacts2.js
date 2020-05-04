@@ -19,7 +19,7 @@ export default class InterestingFacts2 extends React.Component {
 			BestPicActorActressSameYearResult: [],
 			HighestRatingWinNothingYearResult: [],
 			oldestWinnerResults: [],
-			winFirstNomination:[]
+			firstNominationResults:[]
 		}
 
 		this.handleMovieNameChange = this.handleMovieNameChange.bind(this);
@@ -132,7 +132,8 @@ export default class InterestingFacts2 extends React.Component {
 
 			//This saves our HTML representation of the data into the state, which we can call in our render function
 			this.setState({
-				oldestWinnerResults: resultDivs
+				oldestWinnerResults: resultDivs,
+				firstNominationResults: []
 			});
 		});
 	}
@@ -155,6 +156,7 @@ export default class InterestingFacts2 extends React.Component {
 
 			//This saves our HTML representation of the data into the state, which we can call in our render function
 			this.setState({
+				oldestWinnerResults: [],
 				firstNominationResults: resultDivs
 			});
 		});
