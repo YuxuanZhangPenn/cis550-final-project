@@ -11,9 +11,11 @@ export default class InterestingFacts2Row extends React.Component {
 			<div>
 			<div className="BestPicActorActressSameYear-results-container">
 				<div className="title">{this.props.title}</div>
-				<div className="nominees">{this.props.nominees}</div>
-				<div className="number">{this.props.number}</div>
-				<div className="WinFirstNominationActor">{this.props.WinFirstNominationActor}</div>
+				<div className="oldest">{this.props.nominees}</div>
+				<div className="oldest">{this.props.number}</div>
+				<div className="winFirstNominationActor">{this.props.WinFirstNominationActor}</div>
+				<div className="youngest">{this.props.youngestWinner}</div>
+				<div className="youngest">{this.props.age}</div>
 			</div>
 			
 			</div>

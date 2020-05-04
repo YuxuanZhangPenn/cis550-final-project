@@ -19,6 +19,7 @@ export default class InterestingFacts2 extends React.Component {
 			BestPicActorActressSameYearResult: [],
 			HighestRatingWinNothingYearResult: [],
 			oldestWinnerResults: [],
+			youngestWinnerResults: [],
 			firstNominationResults:[]
 		}
 
@@ -28,6 +29,7 @@ export default class InterestingFacts2 extends React.Component {
 
 		this.submitMovie = this.submitMovie.bind(this);
 		this.submitOldestWinner = this.submitOldestWinner.bind(this);
+		this.submitYoungestWinner = this.submitYoungestWinner.bind(this);
 		this.submitWinFirstNomination = this.submitWinFirstNomination.bind(this);
 		this.submitBestPicActorActressSameYearChange = this.submitBestPicActorActressSameYearChange.bind(this);
 		this.submitHighestRatingWinNothingYearChange = this.submitHighestRatingWinNothingYearChange.bind(this);
@@ -133,11 +135,34 @@ export default class InterestingFacts2 extends React.Component {
 			//This saves our HTML representation of the data into the state, which we can call in our render function
 			this.setState({
 				oldestWinnerResults: resultDivs,
+				youngestWinnerResults: [],
 				firstNominationResults: []
 			});
 		});
 	}
 
+	submitYoungestWinner() {
+		fetch("http://localhost:8081/youngestWinner",
+		{
+			method: "GET"
+		}).then(res => {
+			return res.json();
+		}, err => {
+			console.log(err);
+		}).then(resultList => {
+			console.log(resultList); //displays your JSON object in the console
+			let resultDivs = resultList.map((result, i) => 
+			<InterestingFacts2Row id={"movies-" + result.nominee} youngestWinner={result.nominee} age={result.age}  />
+			);
+
+			//This saves our HTML representation of the data into the state, which we can call in our render function
+			this.setState({
+				oldestWinnerResults: [],
+				youngestWinnerResults: resultDivs,
+				firstNominationResults: []
+			});
+		});
+	}
 
 
 	submitWinFirstNomination() {
@@ -157,6 +182,7 @@ export default class InterestingFacts2 extends React.Component {
 			//This saves our HTML representation of the data into the state, which we can call in our render function
 			this.setState({
 				oldestWinnerResults: [],
+				youngestWinnerResults: [],
 				firstNominationResults: resultDivs
 			});
 		});
@@ -200,7 +226,7 @@ export default class InterestingFacts2 extends React.Component {
 			    			<div className="h4">Do you want to know something about actors?</div>
 			    			<div className="headers">
 			    				<div button className = "btn btn-info" > Oldest Winner </div>
-			    				<div button className = "btn btn-info"> Youngest Winner </div>
+			    				<div button className = "btn btn-info" onClick={this.submitYoungestWinner}> Youngest Winner </div>
 			    				<div button className = "btn btn-info" > Most nomination </div>
 			    			</div>
 			    			<div className="headers">
@@ -214,6 +240,9 @@ export default class InterestingFacts2 extends React.Component {
 			    		</div>
 			    		<div className="winFirstNomination-results-container" id="results">
 			    			{this.state.firstNominationResults}
+			    		</div>
+			    		<div className="winFirstNomination-results-container" id="results">
+			    			{this.state.youngestWinnerResults}
 			    		</div>
 			    	</div>
 			    	<div className = "jumbotron">
