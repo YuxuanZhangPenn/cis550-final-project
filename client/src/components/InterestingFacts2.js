@@ -20,7 +20,8 @@ export default class InterestingFacts2 extends React.Component {
 			HighestRatingWinNothingYearResult: [],
 			oldestWinnerResults: [],
 			youngestWinnerResults: [],
-			firstNominationResults:[]
+			firstNominationResults:[],
+			LeadingRole4timesResults:[]
 		}
 
 		this.handleMovieNameChange = this.handleMovieNameChange.bind(this);
@@ -33,6 +34,7 @@ export default class InterestingFacts2 extends React.Component {
 		this.submitWinFirstNomination = this.submitWinFirstNomination.bind(this);
 		this.submitBestPicActorActressSameYearChange = this.submitBestPicActorActressSameYearChange.bind(this);
 		this.submitHighestRatingWinNothingYearChange = this.submitHighestRatingWinNothingYearChange.bind(this);
+		this.submitLeadingRole4timesChange = this.submitLeadingRole4timesChange.bind(this);
 	}
 
 	handleMovieNameChange(e) {
@@ -129,14 +131,15 @@ export default class InterestingFacts2 extends React.Component {
 		}).then(resultList => {
 			console.log(resultList); //displays your JSON object in the console
 			let resultDivs = resultList.map((result, i) => 
-			<InterestingFacts2Row id={"movies-" + result.nominee} nominees={result.nominee} number = {result.number} />
+			<InterestingFacts2Row id={"movies-" + result.nominee} nominees={result.nominee} number = {result.number+" times of nomination"} />
 			);
 
 			//This saves our HTML representation of the data into the state, which we can call in our render function
 			this.setState({
 				oldestWinnerResults: resultDivs,
 				youngestWinnerResults: [],
-				firstNominationResults: []
+				firstNominationResults: [],
+				LeadingRole4timesResults: []
 			});
 		});
 	}
@@ -152,14 +155,15 @@ export default class InterestingFacts2 extends React.Component {
 		}).then(resultList => {
 			console.log(resultList); //displays your JSON object in the console
 			let resultDivs = resultList.map((result, i) => 
-			<InterestingFacts2Row id={"movies-" + result.nominee} youngestWinner={result.nominee} age={result.age}  />
+			<InterestingFacts2Row id={"movies-" + result.nominee} youngestWinner={result.nominee} age={result.age + " year's old"}  />
 			);
 
 			//This saves our HTML representation of the data into the state, which we can call in our render function
 			this.setState({
 				oldestWinnerResults: [],
 				youngestWinnerResults: resultDivs,
-				firstNominationResults: []
+				firstNominationResults: [],
+				LeadingRole4timesResults: []
 			});
 		});
 	}
@@ -183,7 +187,33 @@ export default class InterestingFacts2 extends React.Component {
 			this.setState({
 				oldestWinnerResults: [],
 				youngestWinnerResults: [],
-				firstNominationResults: resultDivs
+				firstNominationResults: resultDivs,
+				LeadingRole4timesResults: []
+			});
+		});
+	}
+
+
+	submitLeadingRole4timesChange() {
+		fetch("http://localhost:8081/leadingRole4times",
+		{
+			method: "GET"
+		}).then(res => {
+			return res.json();
+		}, err => {
+			console.log(err);
+		}).then(resultList => {
+			console.log(resultList); //displays your JSON object in the console
+			let resultDivs = resultList.map((result, i) => 
+			<InterestingFacts2Row id={"movies-" + result.nominee} leadingRole4timesActor={result.nominee} leadingRoleTimes={result.number+" times"} />
+			);
+
+			//This saves our HTML representation of the data into the state, which we can call in our render function
+			this.setState({
+				oldestWinnerResults: [],
+				youngestWinnerResults: [],
+				firstNominationResults: [],
+				LeadingRole4timesResults: resultDivs
 			});
 		});
 	}
@@ -225,14 +255,14 @@ export default class InterestingFacts2 extends React.Component {
 			    		<div className="header-container">
 			    			<div className="h4">Do you want to know something about actors?</div>
 			    			<div className="headers">
-			    				<div button className = "btn btn-info" > Oldest Winner </div>
+			    				<div button className = "btn btn-info" onClick={this.submitLeadingRole4timesChange}> Actor nominated “Actor in a leading role” over 4 times but never won </div>
 			    				<div button className = "btn btn-info" onClick={this.submitYoungestWinner}> Youngest Winner </div>
 			    				<div button className = "btn btn-info" > Most nomination </div>
 			    			</div>
 			    			<div className="headers">
 			    				<div button className = "btn btn-info" onClick={this.submitOldestWinner}> Actor won most in a certain prize </div>
 			    				<div button className = "btn btn-info"> Actor won most "Best Actor in supporting role" </div>
-			    				<div button className = "btn btn-info" onClick={this.submitWinFirstNomination}> Actors win the first nomination </div>
+			    				<div button className = "btn btn-info" onClick={this.submitWinFirstNomination}> Actors won at the first nomination </div>
 			    			</div>
 			    		</div>
 			    		<div className="oldestWinner-results-container" id="results">
@@ -244,6 +274,9 @@ export default class InterestingFacts2 extends React.Component {
 			    		<div className="winFirstNomination-results-container" id="results">
 			    			{this.state.youngestWinnerResults}
 			    		</div>
+			    		<div className="winFirstNomination-results-container" id="results">
+			    			{this.state.LeadingRole4timesResults}
+			    		</div>
 			    	</div>
 			    	<div className = "jumbotron">
 			    		<div className="header-container">
@@ -252,7 +285,7 @@ export default class InterestingFacts2 extends React.Component {
 			    				<div button className = "btn btn-info"> Movies won best picture, best actor and actress at the same year </div>
 			    			</div>
 			    			<div className="headers">
-			    				<div button className = "btn btn-info"> Most nominees in a year </div>
+			    				<div button className = "btn btn-info"> Top 10 lowest rating movies which won Oscar best writing </div>
 			    				<div button className = "btn btn-info"> Won most nominees in a year </div>
 			    				<div button className = "btn btn-info"> Nominated, but won nothing </div>
 			    			</div>

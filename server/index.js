@@ -35,6 +35,7 @@ app.get('/years/:year', routes.AwardPerYear);
 app.get('/oldestWinner', routes.getOldestWinner);
 app.get('/youngestWinner', routes.getYoungestWinner);
 app.get('/winFirstNomination', routes.getFirstNomination);
+app.get('/leadingRole4times', routes.getLeadingRole4times);
 
 /* interesting fact 2*/
 app.get('/bestPicActorActressSameYear/:BestPicActorActressSameYear', routes.getBestPicActorActressSameYear);

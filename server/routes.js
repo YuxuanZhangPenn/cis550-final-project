@@ -78,6 +78,32 @@ function getYoungestWinner(req, res) {
 };
 
 
+function getLeadingRole4times(req, res) {
+    var year = req.params.arg;
+    var query = `
+    SELECT O.nominee, COUNT(*) AS number
+    FROM Oscar O
+    WHERE O.nominee NOT IN 
+    (SELECT DISTINCT nominee FROM Oscar
+    WHERE prize LIKE '%ACTOR%' AND NOT prize LIKE '%SUPPORTING%'
+    AND win_flag = 'TRUE')
+    AND O.prize LIKE '%ACTOR%' AND NOT O.prize LIKE '%SUPPORTING%'
+    GROUP BY O.nominee
+    HAVING number > 3
+    ORDER BY number DESC;
+  `;
+  console.log(query);
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+};
+
+
+
+
 function getFirstNomination(req, res) {
     var year = req.params.arg;
     var query = `
@@ -222,6 +248,7 @@ module.exports = {
 	getOldestWinner: getOldestWinner,
   getYoungestWinner: getYoungestWinner,
   getFirstNomination: getFirstNomination,
+  getLeadingRole4times: getLeadingRole4times,
 	getYear: getYear,
   getMovies: getMovies,
   AwardPerYear: AwardPerYear,
