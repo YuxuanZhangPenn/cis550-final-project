@@ -13,6 +13,7 @@ export default class InterestingFacts2 extends React.Component {
 		this.state = {
 			movieName: "",
 			HighestRatingWinNothingYear: "",
+			LeadingRole4timesChangeTime: "",
 
 			recMovies: [],
 			BestPicActorActressSameYearResult: [],
@@ -27,6 +28,7 @@ export default class InterestingFacts2 extends React.Component {
 
 		this.handleMovieNameChange = this.handleMovieNameChange.bind(this);
 		this.handleHighestRatingWinNothingYearChange = this.handleHighestRatingWinNothingYearChange.bind(this);
+		this.handleLeadingRole4timesChange = this.handleLeadingRole4timesChange.bind(this);
 
 		this.submitMovie = this.submitMovie.bind(this);
 		this.submitOldestWinner = this.submitOldestWinner.bind(this);
@@ -46,9 +48,9 @@ export default class InterestingFacts2 extends React.Component {
 		});
 	}
 
-	handleBestPicActorActressSameYearChange(e) {
+	handleLeadingRole4timesChange(e) {
 		this.setState({
-			BestPicActorActressSameYear: e.target.value
+			LeadingRole4timesChangeTime: e.target.value
 		});
 	}
 
@@ -206,7 +208,7 @@ export default class InterestingFacts2 extends React.Component {
 
 
 	submitLeadingRole4times() {
-		fetch("http://localhost:8081/leadingRole4times",
+		fetch("http://localhost:8081/leadingRole4times/"+this.state.LeadingRole4timesChangeTime,
 		{
 			method: "GET"
 		}).then(res => {
@@ -287,6 +289,15 @@ export default class InterestingFacts2 extends React.Component {
 			    	<div className="jumbotron">
 			    		
 			    		<div className="h5">Interesting Facts</div>
+			    		<div className="input-container">
+			    			<p>1. Actor won "Actor in a leading role” for over &nbsp;
+			    			<input type='text' placeholder="Enter Year" value={this.state.LeadingRole4timesChangeTime} onChange={this.handleLeadingRole4timesChange} id="BestPicActorActressSameYear" className="movie-input"/>
+			    			&nbsp; times but never won (Please enter the number of times)</p>
+			    			<button id="submitMovieBtn" className="submit-btn" onClick={this.submitLeadingRole4times}>Submit</button>
+			    		</div>
+			    		<div className="HighestRatingWinNothingYear-results-container" id="results">
+			    			{this.state.LeadingRole4timesResults}
+			    		</div>
 			    		<br></br>
 			    		<div>
 			    		<p><br/></p>
@@ -305,13 +316,11 @@ export default class InterestingFacts2 extends React.Component {
 			    		<div className="header-container">
 			    			<div className="h4">Do you want to know something about actors?</div>
 			    			<div className="headers">
-			    				<div button className = "btn btn-info" onClick={this.submitLeadingRole4times}> Actor nominated “Actor in a leading role” over 4 times but never won </div> &nbsp;
 			    				<div button className = "btn btn-info" onClick={this.submitYoungestWinner}> Youngest Winner </div> &nbsp;
 			    				<div button className = "btn btn-info" > Most nomination </div> &nbsp;
 			    			</div>
 			    			<div className="headers">
 			    				<div button className = "btn btn-info" onClick={this.submitOldestWinner}> Actor won most in a certain prize </div> &nbsp;
-			    				<div button className = "btn btn-info"> Actor won most "Best Actor in supporting role" </div> &nbsp;
 			    				<div button className = "btn btn-info" onClick={this.submitWinFirstNomination}> Actors won at the first nomination </div> 
 			    			</div>
 			    		</div>
@@ -324,9 +333,6 @@ export default class InterestingFacts2 extends React.Component {
 			    		<div className="winFirstNomination-results-container" id="results">
 			    			{this.state.youngestWinnerResults}
 			    		</div>
-			    		<div className="winFirstNomination-results-container" id="results">
-			    			{this.state.LeadingRole4timesResults}
-			    		</div>
 			    	</div>
 			    	<div className = "jumbotron">
 			    		<div className="header-container">
@@ -338,7 +344,6 @@ export default class InterestingFacts2 extends React.Component {
 			    			<div className="headers">
 			    				<div button className = "btn btn-info" onClick={this.submitLowestRatingBestOscarStory}> Top 10 lowest rating movies which won Oscar best story</div> &nbsp;
 			    				<div button className = "btn btn-info"> Won most nominees in a year </div> &nbsp;
-			    				<div button className = "btn btn-info"> Nominated, but won nothing </div> 
 			    			</div>
 			    		</div>
 			    		<div className="results-container" id="results">

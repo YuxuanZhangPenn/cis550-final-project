@@ -79,19 +79,18 @@ function getYoungestWinner(req, res) {
 
 
 function getLeadingRole4times(req, res) {
-    var year = req.params.arg;
-    var query = `
-    SELECT O.nominee, COUNT(*) AS number
-    FROM Oscar O
-    WHERE O.nominee NOT IN 
-    (SELECT DISTINCT nominee FROM Oscar
-    WHERE prize LIKE '%ACTOR%' AND NOT prize LIKE '%SUPPORTING%'
-    AND win_flag = 'TRUE')
-    AND O.prize LIKE '%ACTOR%' AND NOT O.prize LIKE '%SUPPORTING%'
-    GROUP BY O.nominee
-    HAVING number > 3
-    ORDER BY number DESC;
-  `;
+  var time = req.params.LeadingRole4timesChangeTime;
+  var query = `SELECT O.nominee, COUNT(*) AS number
+  FROM Oscar O
+  WHERE O.nominee NOT IN 
+  (SELECT DISTINCT nominee FROM Oscar
+  WHERE prize LIKE '%ACTOR%' AND NOT prize LIKE '%SUPPORTING%'
+  AND win_flag = 'TRUE')
+  AND O.prize LIKE '%ACTOR%' AND NOT O.prize LIKE '%SUPPORTING%'
+  GROUP BY O.nominee
+  HAVING number >= '${time}'
+  ORDER BY number DESC; `
+;
   console.log(query);
   connection.query(query, function(err, rows, fields) {
     if (err) console.log(err);
@@ -217,8 +216,9 @@ function getBestPicActorActressSameYear(req, res) {
   (select film_title, year_film from Oscar
   where prize like '%ACTRESS%' and not prize like '%SUPPORTING%'
   and win_flag = 'TRUE')) A
-  where (film_title, year_film) in (select * from Temp) AND year_film = '${inputYear}';
+  where (film_title, year_film) in (select * from Temp);
 `;
+
   console.log(query);
 
   connection.query(query, function(err, rows, fields) {
@@ -259,6 +259,33 @@ function getHighestRatingWinNothingYear(req, res) {
 };
 
 
+function getLowestRatingBestOscarStory(req, res) {
+  var inputYear = req.params.highestRatingWinNothingYear;
+
+  var query =`SELECT m.title, AVG(m.rating) as rating 
+  FROM Movies m, Oscar o 
+  WHERE m.title = o.film_title 
+  AND o.prize = 'WRITING (ORIGINAL SCREENPLAY)' 
+  AND win_flag = 'TRUE' 
+  GROUP BY m.title
+  ORDER BY m.rating 
+  LIMIT 10;
+
+`;
+  console.log(query);
+
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      console.log(rows);
+      res.json(rows);
+    }
+  });
+};
+
+
+
+
 // The exported functions, which can be accessed in index.js.
 module.exports = {
 	getAllGenres: getAllGenres,
@@ -268,6 +295,7 @@ module.exports = {
   getFirstNomination: getFirstNomination,
   getLeadingRole4times: getLeadingRole4times,
   getWin3awards: getWin3awards,
+  getLowestRatingBestOscarStory: getLowestRatingBestOscarStory,
 	getYear: getYear,
   getMovies: getMovies,
   AwardPerYear: AwardPerYear,
