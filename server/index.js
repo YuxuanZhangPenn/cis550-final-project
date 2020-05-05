@@ -40,9 +40,11 @@ app.get('/lowestRatingBestOscarStory', routes.getLowestRatingBestOscarStory);
 app.get('/bestPicActorActressSameYear', routes.getBestPicActorActressSameYear);
 app.get('/ageRange', routes.getAgeRange);
 
+
 /* interesting fact 2*/
 app.get('/leadingRole4times/:LeadingRole4timesChangeTime', routes.getLeadingRole4times);
 app.get('/highestRatingWinNothing/:highestRatingWinNothingYear', routes.getHighestRatingWinNothingYear);
+app.get('/animation/:AnimationYear', routes.getAnimation);
 
 app.listen(8081, () => {
 	console.log(`Server listening on PORT 8081`);

@@ -13,21 +13,24 @@ export default class InterestingFacts2 extends React.Component {
 		this.state = {
 			HighestRatingWinNothingYear: "",
 			LeadingRole4timesChangeTime: "",
+			AnimationYear: "",
 
 			BestPicActorActressSameYearResult: [],
 			HighestRatingWinNothingYearResult: [],
 			oldestWinnerResults: [],
 			youngestWinnerResults: [],
-			firstNominationResults:[],
-			LeadingRole4timesResults:[],
-			Win3awardsResults:[],
+			firstNominationResults: [],
+			LeadingRole4timesResults: [],
+			Win3awardsResults: [],
 			LowestRatingBestOscarStoryResults: [],
-			AgeRangeResults:[]
+			AgeRangeResults: [],
+			AnimationResults: []
 		}
 
 		this.handleMovieNameChange = this.handleMovieNameChange.bind(this);
 		this.handleHighestRatingWinNothingYearChange = this.handleHighestRatingWinNothingYearChange.bind(this);
 		this.handleLeadingRole4timesChange = this.handleLeadingRole4timesChange.bind(this);
+		this.handleAnimationYearChange = this.handleAnimationYearChange.bind(this);
 
 		this.submitOldestWinner = this.submitOldestWinner.bind(this);
 		this.submitYoungestWinner = this.submitYoungestWinner.bind(this);
@@ -38,7 +41,7 @@ export default class InterestingFacts2 extends React.Component {
 		this.submitWin3awards = this.submitWin3awards.bind(this);
 		this.submitLowestRatingBestOscarStory = this.submitLowestRatingBestOscarStory.bind(this);
 		this.submitAgeRange = this.submitAgeRange.bind(this);
-		
+		this.submitAnimationYear = this.submitAnimationYear.bind(this);
 	}
 
 	handleMovieNameChange(e) {
@@ -56,6 +59,12 @@ export default class InterestingFacts2 extends React.Component {
 	handleHighestRatingWinNothingYearChange(e) {
 		this.setState({
 			HighestRatingWinNothingYear: e.target.value
+		});
+	}
+
+	handleAnimationYearChange(e) {
+		this.setState({
+			AnimationYear: e.target.value
 		});
 	}
 
@@ -101,6 +110,28 @@ export default class InterestingFacts2 extends React.Component {
 			//This saves our HTML representation of the data into the state, which we can call in our render function
 			this.setState({
 				HighestRatingWinNothingYearResult: resultsDivs,
+			});
+		});
+	}
+
+
+	submitAnimationYear() {
+		fetch("http://localhost:8081/animation/" + this.state.AnimationYear,
+		{
+			method: "GET"
+		}).then(res => {
+			return res.json();
+		}, err => {
+			console.log(err);
+		}).then(resultsList => {
+			console.log(resultsList); //displays your JSON object in the console
+			let resultsDivs = resultsList.map((result, i) => 
+			<InterestingFacts2Row id={"movies-" + result.film_title} AnimationTitle={result.film_title} AnimationYear={result.year_film} />
+			);
+
+			//This saves our HTML representation of the data into the state, which we can call in our render function
+			this.setState({
+				AnimationResults: resultsDivs,
 			});
 		});
 	}
@@ -294,14 +325,13 @@ export default class InterestingFacts2 extends React.Component {
 			    		<div className="h5">Interesting Facts</div>
 			    		<div className="input-container">
 			    			<p>1. Actor won "Actor in a leading role” for over &nbsp;
-			    			<input type='text' placeholder="Enter Year" value={this.state.LeadingRole4timesChangeTime} onChange={this.handleLeadingRole4timesChange} id="BestPicActorActressSameYear" className="movie-input"/>
+			    			<input type='text' placeholder="Enter times" value={this.state.LeadingRole4timesChangeTime} onChange={this.handleLeadingRole4timesChange} id="BestPicActorActressSameYear" className="movie-input"/>
 			    			&nbsp; times but never won (Please enter the number of times)</p>
 			    			<button id="submitMovieBtn" className="submit-btn" onClick={this.submitLeadingRole4times}>Submit</button>
 			    		</div>
 			    		<div className="HighestRatingWinNothingYear-results-container" id="results">
 			    			{this.state.LeadingRole4timesResults}
 			    		</div>
-			    		<br></br>
 			    		<div>
 			    		<p><br/></p>
 			    		</div>
@@ -312,6 +342,17 @@ export default class InterestingFacts2 extends React.Component {
 			    		</div>
 			    		<div className="HighestRatingWinNothingYear-results-container" id="results">
 			    			{this.state.HighestRatingWinNothingYearResult}
+			    		</div>
+			    		<div>
+			    		<p><br/></p>
+			    		</div>
+			    		<div className="input-container">
+			    			<p>3. Animated movies made after 2000 which won Oscar but not Golden Award</p>
+			    			<input type='text' placeholder="Enter Year" value={this.state.AnimationYear} onChange={this.handleAnimationYearChange} id="BestPicActorActressSameYear" className="movie-input"/>
+			    			<button id="submitMovieBtn" className="submit-btn" onClick={this.submitAnimationYear}>Submit</button>
+			    		</div>
+			    		<div className="HighestRatingWinNothingYear-results-container" id="results">
+			    			{this.state.AnimationResults}
 			    		</div>
 			    	</div>
 
