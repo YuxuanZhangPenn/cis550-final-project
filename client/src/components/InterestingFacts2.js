@@ -24,7 +24,8 @@ export default class InterestingFacts2 extends React.Component {
 			Win3awardsResults: [],
 			LowestRatingBestOscarStoryResults: [],
 			AgeRangeResults: [],
-			AnimationResults: []
+			AnimationResults: [],
+			OscarWhichGenreResults: []
 		}
 
 		this.handleMovieNameChange = this.handleMovieNameChange.bind(this);
@@ -42,6 +43,7 @@ export default class InterestingFacts2 extends React.Component {
 		this.submitLowestRatingBestOscarStory = this.submitLowestRatingBestOscarStory.bind(this);
 		this.submitAgeRange = this.submitAgeRange.bind(this);
 		this.submitAnimationYear = this.submitAnimationYear.bind(this);
+		this.submitOscarWhichGenre = this.submitOscarWhichGenre.bind(this);
 	}
 
 	handleMovieNameChange(e) {
@@ -157,7 +159,8 @@ export default class InterestingFacts2 extends React.Component {
 				BestPicActorActressSameYearResult: resultsDivs,
 				Win3awardsResults: [],
 				LowestRatingBestOscarStoryResults: [],
-				AgeRangeResults: []
+				AgeRangeResults: [],
+				OscarWhichGenreResults: []
 			});
 		});
 	}
@@ -233,7 +236,7 @@ export default class InterestingFacts2 extends React.Component {
 				oldestWinnerResults: [],
 				youngestWinnerResults: [],
 				firstNominationResults: resultDivs,
-				LeadingRole4timesResults: []
+				LeadingRole4timesResults: [],
 			});
 		});
 	}
@@ -258,7 +261,8 @@ export default class InterestingFacts2 extends React.Component {
 				BestPicActorActressSameYearResult: [],
 				Win3awardsResults: [],
 				LowestRatingBestOscarStoryResults: resultDivs,
-				AgeRangeResults: []
+				AgeRangeResults: [],
+				OscarWhichGenreResults: []
 			});
 		});
 	}
@@ -282,7 +286,8 @@ export default class InterestingFacts2 extends React.Component {
 				BestPicActorActressSameYearResult: [],
 				Win3awardsResults: resultDivs,
 				LowestRatingBestOscarStoryResults: [],
-				AgeRangeResults: []
+				AgeRangeResults: [],
+				OscarWhichGenreResults: []
 			});
 		});
 	}
@@ -307,10 +312,39 @@ export default class InterestingFacts2 extends React.Component {
 				BestPicActorActressSameYearResult: [],
 				Win3awardsResults: [],
 				LowestRatingBestOscarStoryResults: [],
-				AgeRangeResults: resultDivs
+				AgeRangeResults: resultDivs,
+				OscarWhichGenreResults: []
 			});
 		});
 	}
+
+	
+	submitOscarWhichGenre() {
+		fetch("http://localhost:8081/oscarWhichGenre",
+		{
+			method: "GET"
+		}).then(res => {
+			return res.json();
+		}, err => {
+			console.log(err);
+		}).then(resultList => {
+			console.log(resultList); //displays your JSON object in the console
+			let resultDivs = resultList.map((result, i) => 
+			<InterestingFacts2Row id={"movies-" + result.age} oscarWhichGenreGenre={result.genre} oscarWhichGenreNum={"number of movies: "+result.number} />
+			);
+
+			//This saves our HTML representation of the data into the state, which we can call in our render function
+			this.setState({
+				BestPicActorActressSameYearResult: [],
+				Win3awardsResults: [],
+				LowestRatingBestOscarStoryResults: [],
+				AgeRangeResults: [],
+				OscarWhichGenreResults: resultDivs
+
+			});
+		});
+	}
+
 
 	
 	render() {
@@ -389,6 +423,10 @@ export default class InterestingFacts2 extends React.Component {
 			    				<div button className = "btn btn-info" onClick={this.submitLowestRatingBestOscarStory}> Top 10 lowest rating movies which won Oscar best story</div> &nbsp;
 			    				<div button className = "btn btn-info" onClick={this.submitAgeRange}> Age range when won the prize </div> &nbsp;
 			    			</div>
+			    			<div className="headers">
+			    				<div button className = "btn btn-info" onClick={this.submitOscarWhichGenre}> Genres that Oscar favors</div> &nbsp;
+			    				<div button className = "btn btn-info" > aaa </div> &nbsp;
+			    			</div>
 			    		</div>
 			    		<div className="results-container" id="results">
 			    			{this.state.Win3awardsResults}
@@ -401,6 +439,9 @@ export default class InterestingFacts2 extends React.Component {
 			    		</div>
 			    		<div className="HighestRatingWinNothingYear-results-container" id="results">
 			    			{this.state.AgeRangeResults}
+			    		</div>
+			    		<div className="HighestRatingWinNothingYear-results-container" id="results">
+			    			{this.state.OscarWhichGenreResults}
 			    		</div>
 			    	</div>
 			    </div>

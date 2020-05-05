@@ -340,14 +340,13 @@ function getAnimation(req, res) {
 function getOscarWhichGenre(req, res) {
   var inputYear = req.params.AnimationYear;
 
-  var query =`SELECT DISTINCT O.film_title, O.year_film 
-  FROM Oscar O, Golden G WHERE O.prize LIKE '%ANIMATED FEATURE FILM%' 
-  AND G.prize LIKE '%Animated%'
-  AND O.film_title = G.nominee
-  AND O.year_film > 2000 AND G.year_film > 2000 
-  AND O.win_flag = 'TRUE' AND G.win_flag = 'FALSE'
-
-  ORDER BY O.year_film;
+  var query =`SELECT G.genre, COUNT(*) AS number
+  FROM Oscar O
+  JOIN Movies M on M.title = O.film_title
+  JOIN Genre G on M.id = G.id
+  WHERE O.prize LIKE "%Best Picture%"
+  GROUP BY G.genre
+  ORDER BY number DESC;
 `;
   console.log(query);
 
