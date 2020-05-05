@@ -42,6 +42,7 @@ app.get('/ageRange', routes.getAgeRange);
 app.get('/oscarWhichGenre', routes.getOscarWhichGenre);
 app.get('/oscarAwardWhichGenre', routes.getOscarAwardWhichGenre);
 app.get('/oscarDirectorActor', routes.getOscarDirectorActor);
+app.get('/goldenDirectorActor', routes.getGoldenDirectorActor);
 
 
 /* interesting fact 2*/

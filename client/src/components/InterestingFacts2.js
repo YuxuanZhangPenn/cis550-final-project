@@ -27,7 +27,8 @@ export default class InterestingFacts2 extends React.Component {
 			AnimationResults: [],
 			OscarWhichGenreResults: [],
 			OscarAwardWhichGenreResults: [],
-			OscarDirectorActorResults: []
+			OscarDirectorActorResults: [],
+			GoldenDirectorActorResults: []
 		}
 
 		this.handleMovieNameChange = this.handleMovieNameChange.bind(this);
@@ -48,6 +49,7 @@ export default class InterestingFacts2 extends React.Component {
 		this.submitOscarWhichGenre = this.submitOscarWhichGenre.bind(this);
 		this.submitOscarAwardWhichGenre = this.submitOscarAwardWhichGenre.bind(this);
 		this.submitOscarDirectorActor = this.submitOscarDirectorActor.bind(this);
+		this.submitGoldenDirectorActor = this.submitGoldenDirectorActor.bind(this);
 	}
 
 	handleMovieNameChange(e) {
@@ -192,7 +194,8 @@ export default class InterestingFacts2 extends React.Component {
 				youngestWinnerResults: [],
 				firstNominationResults: [],
 				LeadingRole4timesResults: [],
-				OscarDirectorActorResults: []
+				OscarDirectorActorResults: [],
+				GoldenDirectorActorResults: []
 			});
 		});
 	}
@@ -219,7 +222,8 @@ export default class InterestingFacts2 extends React.Component {
 				youngestWinnerResults: resultDivs,
 				firstNominationResults: [],
 				LeadingRole4timesResults: [],
-				OscarDirectorActorResults: []
+				OscarDirectorActorResults: [],
+				GoldenDirectorActorResults: []
 			});
 		});
 	}
@@ -245,7 +249,8 @@ export default class InterestingFacts2 extends React.Component {
 				youngestWinnerResults: [],
 				firstNominationResults: resultDivs,
 				LeadingRole4timesResults: [],
-				OscarDirectorActorResults: []
+				OscarDirectorActorResults: [],
+				GoldenDirectorActorResults: []
 			});
 		});
 	}
@@ -263,7 +268,7 @@ export default class InterestingFacts2 extends React.Component {
 		}).then(resultList => {
 			console.log(resultList); //displays your JSON object in the console
 			let resultDivs = resultList.map((result, i) => 
-			<InterestingFacts2Row id={"movies-" + result.title} oscarDirectorActortitle={result.title} oscarDirectorActorName={result.name} />
+			<InterestingFacts2Row id={"movies-" + result.title} oscarDirectorActortitle={"movie: "+result.title} oscarDirectorActorName={"director's name: "+result.name} />
 			);
 
 			//This saves our HTML representation of the data into the state, which we can call in our render function
@@ -272,10 +277,40 @@ export default class InterestingFacts2 extends React.Component {
 				youngestWinnerResults: [],
 				firstNominationResults: [],
 				LeadingRole4timesResults: [],
-				OscarDirectorActorResults: resultDivs
+				OscarDirectorActorResults: resultDivs,
+				GoldenDirectorActorResults: []
 			});
 		});
 	}
+
+
+
+	submitGoldenDirectorActor() {
+		fetch("http://localhost:8081/goldenDirectorActor",
+		{
+			method: "GET"
+		}).then(res => {
+			return res.json();
+		}, err => {
+			console.log(err);
+		}).then(resultList => {
+			console.log(resultList); //displays your JSON object in the console
+			let resultDivs = resultList.map((result, i) => 
+			<InterestingFacts2Row id={"movies-" + result.title} goldenDirectorActortitle={"movie: "+result.title} goldenDirectorActorName={"director's name: "+result.name} />
+			);
+
+			//This saves our HTML representation of the data into the state, which we can call in our render function
+			this.setState({
+				oldestWinnerResults: [],
+				youngestWinnerResults: [],
+				firstNominationResults: [],
+				LeadingRole4timesResults: [],
+				OscarDirectorActorResults: [],
+				GoldenDirectorActorResults: resultDivs
+			});
+		});
+	}
+
 
 
 
@@ -465,6 +500,7 @@ export default class InterestingFacts2 extends React.Component {
 			    			<div className="headers">
 			    				<div button className = "btn btn-info" onClick={this.submitYoungestWinner}> Youngest Winner </div> &nbsp;
 			    				<div button className = "btn btn-info" onClick={this.submitOscarDirectorActor}> Oscar best director also the actor of this film </div> &nbsp;
+			    				<div button className = "btn btn-info" onClick={this.submitGoldenDirectorActor}> Golden best director also the actor of this film </div> &nbsp;
 			    			</div>
 			    			<div className="headers">
 			    				<div button className = "btn btn-info" onClick={this.submitOldestWinner}> Actor won most in a certain prize </div> &nbsp;
@@ -482,6 +518,9 @@ export default class InterestingFacts2 extends React.Component {
 			    		</div>
 			    		<div className="winFirstNomination-results-container" id="results">
 			    			{this.state.OscarDirectorActorResults}
+			    		</div>
+			    		<div className="winFirstNomination-results-container" id="results">
+			    			{this.state.GoldenDirectorActorResults}
 			    		</div>
 			    	</div>
 			    	<div className = "jumbotron">
