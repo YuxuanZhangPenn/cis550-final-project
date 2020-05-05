@@ -315,12 +315,13 @@ function getAgeRange(req, res) {
 function getAnimation(req, res) {
   var inputYear = req.params.AnimationYear;
 
-  var query =`SELECT DISTINCT O.film_title, O.year_film 
+  var query =`SELECT DISTINCT O.film_title 
   FROM Oscar O, Golden G WHERE O.prize LIKE '%ANIMATED FEATURE FILM%' 
   AND G.prize LIKE '%Animated%'
   AND O.film_title = G.nominee
   AND O.year_film > 2000 AND G.year_film > 2000 
   AND O.win_flag = 'TRUE' AND G.win_flag = 'FALSE'
+  AND O.year_film = '${inputYear}'
   ORDER BY O.year_film;
 `;
   console.log(query);
@@ -335,6 +336,29 @@ function getAnimation(req, res) {
 };
 
 
+
+function getOscarWhichGenre(req, res) {
+  var inputYear = req.params.AnimationYear;
+
+  var query =`SELECT DISTINCT O.film_title, O.year_film 
+  FROM Oscar O, Golden G WHERE O.prize LIKE '%ANIMATED FEATURE FILM%' 
+  AND G.prize LIKE '%Animated%'
+  AND O.film_title = G.nominee
+  AND O.year_film > 2000 AND G.year_film > 2000 
+  AND O.win_flag = 'TRUE' AND G.win_flag = 'FALSE'
+
+  ORDER BY O.year_film;
+`;
+  console.log(query);
+
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      console.log(rows);
+      res.json(rows);
+    }
+  });
+};
 
 
 
@@ -355,5 +379,6 @@ module.exports = {
   getBestPicActorActressSameYear: getBestPicActorActressSameYear,
   getHighestRatingWinNothingYear: getHighestRatingWinNothingYear,
   getAgeRange: getAgeRange,
-  getAnimation: getAnimation
+  getAnimation: getAnimation,
+  getOscarWhichGenre: getOscarWhichGenre
 }

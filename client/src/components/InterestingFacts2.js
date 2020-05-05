@@ -126,7 +126,7 @@ export default class InterestingFacts2 extends React.Component {
 		}).then(resultsList => {
 			console.log(resultsList); //displays your JSON object in the console
 			let resultsDivs = resultsList.map((result, i) => 
-			<InterestingFacts2Row id={"movies-" + result.film_title} AnimationTitle={result.film_title} AnimationYear={result.year_film} />
+			<InterestingFacts2Row id={"movies-" + result.film_title} AnimationTitle={result.film_title} />
 			);
 
 			//This saves our HTML representation of the data into the state, which we can call in our render function

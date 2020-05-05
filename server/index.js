@@ -39,6 +39,7 @@ app.get('/win3awards', routes.getWin3awards);
 app.get('/lowestRatingBestOscarStory', routes.getLowestRatingBestOscarStory);
 app.get('/bestPicActorActressSameYear', routes.getBestPicActorActressSameYear);
 app.get('/ageRange', routes.getAgeRange);
+app.get('/oscarWhichGenre', routes.getOscarWhichGenre);
 
 
 /* interesting fact 2*/
