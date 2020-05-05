@@ -361,6 +361,30 @@ function getOscarWhichGenre(req, res) {
 
 
 
+function getOscarAwardWhichGenre(req, res) {
+  var inputYear = req.params.AnimationYear;
+
+  var query =`SELECT G.genre, COUNT(*) AS number
+  FROM Oscar O
+  JOIN Movies M on M.title = O.film_title
+  JOIN Genre G on M.id = G.id
+  WHERE O.prize LIKE "%Best Picture%"
+  AND O.win_flag = "True"
+  GROUP BY G.genre
+  ORDER BY number DESC;
+`;
+  console.log(query);
+
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      console.log(rows);
+      res.json(rows);
+    }
+  });
+};
+
+
 
 // The exported functions, which can be accessed in index.js.
 module.exports = {
@@ -379,5 +403,6 @@ module.exports = {
   getHighestRatingWinNothingYear: getHighestRatingWinNothingYear,
   getAgeRange: getAgeRange,
   getAnimation: getAnimation,
-  getOscarWhichGenre: getOscarWhichGenre
+  getOscarWhichGenre: getOscarWhichGenre,
+  getOscarAwardWhichGenre: getOscarAwardWhichGenre
 }

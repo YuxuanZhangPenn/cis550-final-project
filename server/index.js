@@ -40,6 +40,7 @@ app.get('/lowestRatingBestOscarStory', routes.getLowestRatingBestOscarStory);
 app.get('/bestPicActorActressSameYear', routes.getBestPicActorActressSameYear);
 app.get('/ageRange', routes.getAgeRange);
 app.get('/oscarWhichGenre', routes.getOscarWhichGenre);
+app.get('/oscarAwardWhichGenre', routes.getOscarAwardWhichGenre);
 
 
 /* interesting fact 2*/

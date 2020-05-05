@@ -25,7 +25,8 @@ export default class InterestingFacts2 extends React.Component {
 			LowestRatingBestOscarStoryResults: [],
 			AgeRangeResults: [],
 			AnimationResults: [],
-			OscarWhichGenreResults: []
+			OscarWhichGenreResults: [],
+			OscarAwardWhichGenreResults: []
 		}
 
 		this.handleMovieNameChange = this.handleMovieNameChange.bind(this);
@@ -44,6 +45,7 @@ export default class InterestingFacts2 extends React.Component {
 		this.submitAgeRange = this.submitAgeRange.bind(this);
 		this.submitAnimationYear = this.submitAnimationYear.bind(this);
 		this.submitOscarWhichGenre = this.submitOscarWhichGenre.bind(this);
+		this.submitOscarAwardWhichGenre = this.submitOscarAwardWhichGenre.bind(this);
 	}
 
 	handleMovieNameChange(e) {
@@ -160,7 +162,8 @@ export default class InterestingFacts2 extends React.Component {
 				Win3awardsResults: [],
 				LowestRatingBestOscarStoryResults: [],
 				AgeRangeResults: [],
-				OscarWhichGenreResults: []
+				OscarWhichGenreResults: [],
+				OscarAwardWhichGenreResults: []
 			});
 		});
 	}
@@ -236,7 +239,7 @@ export default class InterestingFacts2 extends React.Component {
 				oldestWinnerResults: [],
 				youngestWinnerResults: [],
 				firstNominationResults: resultDivs,
-				LeadingRole4timesResults: [],
+				LeadingRole4timesResults: []
 			});
 		});
 	}
@@ -262,7 +265,8 @@ export default class InterestingFacts2 extends React.Component {
 				Win3awardsResults: [],
 				LowestRatingBestOscarStoryResults: resultDivs,
 				AgeRangeResults: [],
-				OscarWhichGenreResults: []
+				OscarWhichGenreResults: [],
+				OscarAwardWhichGenreResults: []
 			});
 		});
 	}
@@ -287,7 +291,8 @@ export default class InterestingFacts2 extends React.Component {
 				Win3awardsResults: resultDivs,
 				LowestRatingBestOscarStoryResults: [],
 				AgeRangeResults: [],
-				OscarWhichGenreResults: []
+				OscarWhichGenreResults: [],
+				OscarAwardWhichGenreResults: []
 			});
 		});
 	}
@@ -313,7 +318,8 @@ export default class InterestingFacts2 extends React.Component {
 				Win3awardsResults: [],
 				LowestRatingBestOscarStoryResults: [],
 				AgeRangeResults: resultDivs,
-				OscarWhichGenreResults: []
+				OscarWhichGenreResults: [],
+				OscarAwardWhichGenreResults: []
 			});
 		});
 	}
@@ -339,8 +345,37 @@ export default class InterestingFacts2 extends React.Component {
 				Win3awardsResults: [],
 				LowestRatingBestOscarStoryResults: [],
 				AgeRangeResults: [],
-				OscarWhichGenreResults: resultDivs
+				OscarWhichGenreResults: resultDivs,
+				OscarAwardWhichGenreResults: []
 
+			});
+		});
+	}
+
+
+
+	submitOscarAwardWhichGenre() {
+		fetch("http://localhost:8081/oscarAwardWhichGenre",
+		{
+			method: "GET"
+		}).then(res => {
+			return res.json();
+		}, err => {
+			console.log(err);
+		}).then(resultList => {
+			console.log(resultList); //displays your JSON object in the console
+			let resultDivs = resultList.map((result, i) => 
+			<InterestingFacts2Row id={"movies-" + result.age} oscarAwardWhichGenreGenre={result.genre} oscarAwardWhichGenreNum={"number of movies: "+result.number} />
+			);
+
+			//This saves our HTML representation of the data into the state, which we can call in our render function
+			this.setState({
+				BestPicActorActressSameYearResult: [],
+				Win3awardsResults: [],
+				LowestRatingBestOscarStoryResults: [],
+				AgeRangeResults: [],
+				OscarWhichGenreResults: [],
+				OscarAwardWhichGenreResults: resultDivs
 			});
 		});
 	}
@@ -425,7 +460,7 @@ export default class InterestingFacts2 extends React.Component {
 			    			</div>
 			    			<div className="headers">
 			    				<div button className = "btn btn-info" onClick={this.submitOscarWhichGenre}> number of each genre in Oscar nomination</div> &nbsp;
-			    				<div button className = "btn btn-info" > aaa </div> &nbsp;
+			    				<div button className = "btn btn-info" onClick={this.submitOscarAwardWhichGenre}> number of each genre in Oscar Award </div> &nbsp;
 			    			</div>
 			    		</div>
 			    		<div className="results-container" id="results">
@@ -442,6 +477,9 @@ export default class InterestingFacts2 extends React.Component {
 			    		</div>
 			    		<div className="HighestRatingWinNothingYear-results-container" id="results">
 			    			{this.state.OscarWhichGenreResults}
+			    		</div>
+			    		<div className="HighestRatingWinNothingYear-results-container" id="results">
+			    			{this.state.OscarAwardWhichGenreResults}
 			    		</div>
 			    	</div>
 			    </div>
