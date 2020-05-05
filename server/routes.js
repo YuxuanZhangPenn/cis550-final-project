@@ -386,6 +386,31 @@ function getOscarAwardWhichGenre(req, res) {
 
 
 
+function getOscarDirectorActor(req, res) {
+  var inputYear = req.params.AnimationYear;
+
+  var query =`SELECT M.title, P.name
+  FROM Movies M
+  JOIN Crew C on C.movie_id = M.id
+  JOIN People P on P.name_id = C.name_id
+  WHERE C.category = "actor" 
+  AND (P.name, M.title) in (SELECT DISTINCT nominee, film_title
+  FROM Oscar
+  WHERE prize LIKE "Directing"
+  AND win_flag = "True");
+`;
+  console.log(query);
+
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      console.log(rows);
+      res.json(rows);
+    }
+  });
+};
+
+
 // The exported functions, which can be accessed in index.js.
 module.exports = {
 	getAllGenres: getAllGenres,
@@ -404,5 +429,6 @@ module.exports = {
   getAgeRange: getAgeRange,
   getAnimation: getAnimation,
   getOscarWhichGenre: getOscarWhichGenre,
-  getOscarAwardWhichGenre: getOscarAwardWhichGenre
+  getOscarAwardWhichGenre: getOscarAwardWhichGenre,
+  getOscarDirectorActor: getOscarDirectorActor
 }

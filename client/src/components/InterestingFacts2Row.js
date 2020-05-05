@@ -27,6 +27,8 @@ export default class InterestingFacts2Row extends React.Component {
 				<div className="win3prize">{this.props.oscarWhichGenreNum} </div>
 				<div className="win3prize">{this.props.oscarAwardWhichGenreGenre} </div>
 				<div className="win3prize">{this.props.oscarAwardWhichGenreNum} </div>
+				<div className="win3prize">{this.props.oscarDirectorActortitle} </div>
+				<div className="win3prize">{this.props.oscarDirectorActorName} </div>
 			</div>
 		);
 	}
