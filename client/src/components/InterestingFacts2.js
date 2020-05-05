@@ -193,7 +193,6 @@ export default class InterestingFacts2 extends React.Component {
 				oldestWinnerResults: resultDivs,
 				youngestWinnerResults: [],
 				firstNominationResults: [],
-				LeadingRole4timesResults: [],
 				OscarDirectorActorResults: [],
 				GoldenDirectorActorResults: []
 			});
@@ -221,7 +220,6 @@ export default class InterestingFacts2 extends React.Component {
 				oldestWinnerResults: [],
 				youngestWinnerResults: resultDivs,
 				firstNominationResults: [],
-				LeadingRole4timesResults: [],
 				OscarDirectorActorResults: [],
 				GoldenDirectorActorResults: []
 			});
@@ -248,7 +246,6 @@ export default class InterestingFacts2 extends React.Component {
 				oldestWinnerResults: [],
 				youngestWinnerResults: [],
 				firstNominationResults: resultDivs,
-				LeadingRole4timesResults: [],
 				OscarDirectorActorResults: [],
 				GoldenDirectorActorResults: []
 			});
@@ -276,7 +273,6 @@ export default class InterestingFacts2 extends React.Component {
 				oldestWinnerResults: [],
 				youngestWinnerResults: [],
 				firstNominationResults: [],
-				LeadingRole4timesResults: [],
 				OscarDirectorActorResults: resultDivs,
 				GoldenDirectorActorResults: []
 			});
@@ -304,7 +300,6 @@ export default class InterestingFacts2 extends React.Component {
 				oldestWinnerResults: [],
 				youngestWinnerResults: [],
 				firstNominationResults: [],
-				LeadingRole4timesResults: [],
 				OscarDirectorActorResults: [],
 				GoldenDirectorActorResults: resultDivs
 			});
