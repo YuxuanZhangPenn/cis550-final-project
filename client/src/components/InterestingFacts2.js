@@ -424,7 +424,7 @@ export default class InterestingFacts2 extends React.Component {
 			    				<div button className = "btn btn-info" onClick={this.submitAgeRange}> Age range when won the prize </div> &nbsp;
 			    			</div>
 			    			<div className="headers">
-			    				<div button className = "btn btn-info" onClick={this.submitOscarWhichGenre}> Genres that Oscar favors</div> &nbsp;
+			    				<div button className = "btn btn-info" onClick={this.submitOscarWhichGenre}> number of each genre in Oscar nomination</div> &nbsp;
 			    				<div button className = "btn btn-info" > aaa </div> &nbsp;
 			    			</div>
 			    		</div>
