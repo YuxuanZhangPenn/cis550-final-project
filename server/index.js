@@ -38,6 +38,7 @@ app.get('/winFirstNomination', routes.getFirstNomination);
 app.get('/win3awards', routes.getWin3awards);
 app.get('/lowestRatingBestOscarStory', routes.getLowestRatingBestOscarStory);
 app.get('/bestPicActorActressSameYear', routes.getBestPicActorActressSameYear);
+app.get('/ageRange', routes.getAgeRange);
 
 /* interesting fact 2*/
 app.get('/leadingRole4times/:LeadingRole4timesChangeTime', routes.getLeadingRole4times);

@@ -11,11 +11,9 @@ export default class InterestingFacts2 extends React.Component {
 		// State maintained by this React component is the selected movie name,
 		// and the list of recommended movies.
 		this.state = {
-			movieName: "",
 			HighestRatingWinNothingYear: "",
 			LeadingRole4timesChangeTime: "",
 
-			recMovies: [],
 			BestPicActorActressSameYearResult: [],
 			HighestRatingWinNothingYearResult: [],
 			oldestWinnerResults: [],
@@ -23,14 +21,14 @@ export default class InterestingFacts2 extends React.Component {
 			firstNominationResults:[],
 			LeadingRole4timesResults:[],
 			Win3awardsResults:[],
-			LowestRatingBestOscarStoryResults: []
+			LowestRatingBestOscarStoryResults: [],
+			AgeRangeResults:[]
 		}
 
 		this.handleMovieNameChange = this.handleMovieNameChange.bind(this);
 		this.handleHighestRatingWinNothingYearChange = this.handleHighestRatingWinNothingYearChange.bind(this);
 		this.handleLeadingRole4timesChange = this.handleLeadingRole4timesChange.bind(this);
 
-		this.submitMovie = this.submitMovie.bind(this);
 		this.submitOldestWinner = this.submitOldestWinner.bind(this);
 		this.submitYoungestWinner = this.submitYoungestWinner.bind(this);
 		this.submitWinFirstNomination = this.submitWinFirstNomination.bind(this);
@@ -39,6 +37,7 @@ export default class InterestingFacts2 extends React.Component {
 		this.submitLeadingRole4times = this.submitLeadingRole4times.bind(this);
 		this.submitWin3awards = this.submitWin3awards.bind(this);
 		this.submitLowestRatingBestOscarStory = this.submitLowestRatingBestOscarStory.bind(this);
+		this.submitAgeRange = this.submitAgeRange.bind(this);
 		
 	}
 
@@ -61,26 +60,51 @@ export default class InterestingFacts2 extends React.Component {
 	}
 
 	/* ---- Q2 (Recommendations) ---- */
-	submitMovie() {
-		fetch("http://localhost:8081/bestPicActorActressSameYear/" + this.state.movieName,
+
+
+	submitLeadingRole4times() {
+		fetch("http://localhost:8081/leadingRole4times/"+this.state.LeadingRole4timesChangeTime,
 		{
 			method: "GET"
 		}).then(res => {
 			return res.json();
 		}, err => {
 			console.log(err);
-		}).then(moviesList => {
-			console.log(moviesList); //displays your JSON object in the console
-			let moviesDivs = moviesList.map((movie, i) => 
-			<InterestingFacts2Row id={"movies-" + movie.title} title={movie.title} id = {movie.id} rating = {movie.rating} vote_count = {movie.vote_count}/>
+		}).then(resultList => {
+			console.log(resultList); //displays your JSON object in the console
+			let resultDivs = resultList.map((result, i) => 
+			<InterestingFacts2Row id={"movies-" + result.nominee} leadingRole4timesActor={result.nominee} leadingRoleTimes={result.number+" times"} />
 			);
 
 			//This saves our HTML representation of the data into the state, which we can call in our render function
 			this.setState({
-				recMovies: moviesDivs
+				LeadingRole4timesResults: resultDivs
 			});
 		});
 	}
+
+
+	submitHighestRatingWinNothingYearChange() {
+		fetch("http://localhost:8081/highestRatingWinNothing/" + this.state.HighestRatingWinNothingYear,
+		{
+			method: "GET"
+		}).then(res => {
+			return res.json();
+		}, err => {
+			console.log(err);
+		}).then(resultsList => {
+			console.log(resultsList); //displays your JSON object in the console
+			let resultsDivs = resultsList.map((result, i) => 
+			<InterestingFacts2Row id={"movies-" + result.title} title={result.title} />
+			);
+
+			//This saves our HTML representation of the data into the state, which we can call in our render function
+			this.setState({
+				HighestRatingWinNothingYearResult: resultsDivs,
+			});
+		});
+	}
+
 
 
 	submitBestPicActorActressSameYearChange() {
@@ -100,35 +124,14 @@ export default class InterestingFacts2 extends React.Component {
 			//This saves our HTML representation of the data into the state, which we can call in our render function
 			this.setState({
 				BestPicActorActressSameYearResult: resultsDivs,
-				oldestWinnerResults: [],
-				youngestWinnerResults: [],
-				firstNominationResults: [],
-				LeadingRole4timesResults: []
+				Win3awardsResults: [],
+				LowestRatingBestOscarStoryResults: [],
+				AgeRangeResults: []
 			});
 		});
 	}
 
-	submitHighestRatingWinNothingYearChange() {
-		fetch("http://localhost:8081/highestRatingWinNothing/" + this.state.HighestRatingWinNothingYear,
-		{
-			method: "GET"
-		}).then(res => {
-			return res.json();
-		}, err => {
-			console.log(err);
-		}).then(resultsList => {
-			console.log(resultsList); //displays your JSON object in the console
-			let resultsDivs = resultsList.map((result, i) => 
-			<InterestingFacts2Row id={"movies-" + result.title} title={result.title} />
-			);
 
-			//This saves our HTML representation of the data into the state, which we can call in our render function
-			this.setState({
-				HighestRatingWinNothingYearResult: resultsDivs,
-
-			});
-		});
-	}
 
 	submitOldestWinner() {
 		fetch("http://localhost:8081/oldestWinner",
@@ -146,7 +149,6 @@ export default class InterestingFacts2 extends React.Component {
 
 			//This saves our HTML representation of the data into the state, which we can call in our render function
 			this.setState({
-				BestPicActorActressSameYearResult: [],
 				oldestWinnerResults: resultDivs,
 				youngestWinnerResults: [],
 				firstNominationResults: [],
@@ -171,7 +173,7 @@ export default class InterestingFacts2 extends React.Component {
 
 			//This saves our HTML representation of the data into the state, which we can call in our render function
 			this.setState({
-				BestPicActorActressSameYearResult: [],
+				
 				oldestWinnerResults: [],
 				youngestWinnerResults: resultDivs,
 				firstNominationResults: [],
@@ -197,7 +199,6 @@ export default class InterestingFacts2 extends React.Component {
 
 			//This saves our HTML representation of the data into the state, which we can call in our render function
 			this.setState({
-				BestPicActorActressSameYearResult: [],
 				oldestWinnerResults: [],
 				youngestWinnerResults: [],
 				firstNominationResults: resultDivs,
@@ -207,8 +208,8 @@ export default class InterestingFacts2 extends React.Component {
 	}
 
 
-	submitLeadingRole4times() {
-		fetch("http://localhost:8081/leadingRole4times/"+this.state.LeadingRole4timesChangeTime,
+	submitLowestRatingBestOscarStory() {
+		fetch("http://localhost:8081/lowestRatingBestOscarStory",
 		{
 			method: "GET"
 		}).then(res => {
@@ -218,20 +219,18 @@ export default class InterestingFacts2 extends React.Component {
 		}).then(resultList => {
 			console.log(resultList); //displays your JSON object in the console
 			let resultDivs = resultList.map((result, i) => 
-			<InterestingFacts2Row id={"movies-" + result.nominee} leadingRole4timesActor={result.nominee} leadingRoleTimes={result.number+" times"} />
+			<InterestingFacts2Row id={"movies-" + result.title} LowestRatingBestOscarStoryTitle={result.title} LowestRatingBestOscarStoryRating={result.rating}/>
 			);
 
 			//This saves our HTML representation of the data into the state, which we can call in our render function
 			this.setState({
 				BestPicActorActressSameYearResult: [],
-				oldestWinnerResults: [],
-				youngestWinnerResults: [],
-				firstNominationResults: [],
-				LeadingRole4timesResults: resultDivs
+				Win3awardsResults: [],
+				LowestRatingBestOscarStoryResults: resultDivs,
+				AgeRangeResults: []
 			});
 		});
 	}
-
 
 	submitWin3awards() {
 		fetch("http://localhost:8081/win3awards",
@@ -249,15 +248,17 @@ export default class InterestingFacts2 extends React.Component {
 
 			//This saves our HTML representation of the data into the state, which we can call in our render function
 			this.setState({
+				BestPicActorActressSameYearResult: [],
 				Win3awardsResults: resultDivs,
-				LowestRatingBestOscarStoryResults: []
+				LowestRatingBestOscarStoryResults: [],
+				AgeRangeResults: []
 			});
 		});
 	}
 
 
-	submitLowestRatingBestOscarStory() {
-		fetch("http://localhost:8081/lowestRatingBestOscarStory",
+	submitAgeRange() {
+		fetch("http://localhost:8081/ageRange",
 		{
 			method: "GET"
 		}).then(res => {
@@ -267,13 +268,15 @@ export default class InterestingFacts2 extends React.Component {
 		}).then(resultList => {
 			console.log(resultList); //displays your JSON object in the console
 			let resultDivs = resultList.map((result, i) => 
-			<InterestingFacts2Row id={"movies-" + result.title} LowestRatingBestOscarStoryTitle={result.title} LowestRatingBestOscarStoryRating={"rating: "+result.rating} />
+			<InterestingFacts2Row id={"movies-" + result.age} ageRangeAge={result.age} ageRangeNum={"number of actor & actress: "+result.number} />
 			);
 
 			//This saves our HTML representation of the data into the state, which we can call in our render function
 			this.setState({
+				BestPicActorActressSameYearResult: [],
 				Win3awardsResults: [],
-				LowestRatingBestOscarStoryResults: resultDivs
+				LowestRatingBestOscarStoryResults: [],
+				AgeRangeResults: resultDivs
 			});
 		});
 	}
@@ -343,7 +346,7 @@ export default class InterestingFacts2 extends React.Component {
 			    			</div>
 			    			<div className="headers">
 			    				<div button className = "btn btn-info" onClick={this.submitLowestRatingBestOscarStory}> Top 10 lowest rating movies which won Oscar best story</div> &nbsp;
-			    				<div button className = "btn btn-info"> Won most nominees in a year </div> &nbsp;
+			    				<div button className = "btn btn-info" onClick={this.submitAgeRange}> Age range when won the prize </div> &nbsp;
 			    			</div>
 			    		</div>
 			    		<div className="results-container" id="results">
@@ -354,6 +357,9 @@ export default class InterestingFacts2 extends React.Component {
 			    		</div>
 			    		<div className="HighestRatingWinNothingYear-results-container" id="results">
 			    			{this.state.BestPicActorActressSameYearResult}
+			    		</div>
+			    		<div className="HighestRatingWinNothingYear-results-container" id="results">
+			    			{this.state.AgeRangeResults}
 			    		</div>
 			    	</div>
 			    </div>

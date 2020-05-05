@@ -285,6 +285,37 @@ function getLowestRatingBestOscarStory(req, res) {
 
 
 
+function getAgeRange(req, res) {
+  var inputYear = req.params.highestRatingWinNothingYear;
+
+  var query =`SELECT concat(FLOOR((O.year-P.birth)/10)*10, 's') AS age, count(*) AS number
+  FROM Oscar O JOIN People P on O.nominee = P.name
+  WHERE P.birth <> 0
+  AND O.year-P.birth>0
+  AND O.year-P.birth<100
+  AND O.win_flag = 'True'
+  GROUP BY age
+  ORDER BY count(*) DESC
+  LIMIT 10;
+
+`;
+  console.log(query);
+
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      console.log(rows);
+      res.json(rows);
+    }
+  });
+};
+
+
+
+
+
+
+
 
 // The exported functions, which can be accessed in index.js.
 module.exports = {
@@ -300,5 +331,6 @@ module.exports = {
   getMovies: getMovies,
   AwardPerYear: AwardPerYear,
   getBestPicActorActressSameYear: getBestPicActorActressSameYear,
-  getHighestRatingWinNothingYear: getHighestRatingWinNothingYear
+  getHighestRatingWinNothingYear: getHighestRatingWinNothingYear,
+  getAgeRange: getAgeRange
 }
